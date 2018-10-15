@@ -20,51 +20,57 @@ public class eBee  extends User {
         return self;
     }
 
-    public Double percentFee(Double amount){
-        Double percentFee = 0;
-        if(amount > 1000 && amount <=2000){
-            percentFee = 0.1;
+    public Double calculatePercentFee(Double amount){
+
+        if(amount > 1000 && amount <= 2000){
+            return 0.1 * amount;
         }
-        if(amount > 2000 && amount <=500){
-            percentFee = 0.05;
+        if(amount > 2000 && amount <= 5000){
+            return 0.05 * amount;
         }
         if(amount > 5000){
-            percentFee = 0.01;
+            return 0.01 * amount;
         }
-        return percentFee;
+        return 0.0;
     }
 
-    public Double constantFee(Dobule amount){
-        Double constantFee = 0.0;
+    public Double calculateConstantFee(Double amount){
         if(amount <= 1000){
-             constantFee = 10;
+            return 10.0;
         }
-        return constantFee;
+        return 0.0;
     }
 
     public Double applyPromotion(Seller owner, Double feeAmount){
-        Double promotedFees = feeAmount;
-        if(owner.category == 'promoted'){
-            promotedFees = 0.9 * feeAmount;
+        
+        if(owner.category == "promoted"){
+            return 0.9 * feeAmount;
         }
-        if(owner.category == 'premium'){
-            promotedFees = 0.85 * feeAmount;
+        if(owner.category == "premium"){
+            return 0.85 * feeAmount;
         }
-        if(owner.category == 'platinium'){
-            promotedFees = 0.8 * feeAmount;
+        if(owner.category == "platinium"){
+            return 0.8 * feeAmount;
         }
-        return promotedFees;
+        return feeAmount;
     }
     
     public Double eBeeEndOfAuction(Item item){
         Double currencyRate = Currency.currencyRate(item.owner.country, eBeeCompany.country, Date.today());
         Double lastBuyerBetInTresoCurrency = item.lastBuyerBet / currencyRate ;
-        Double percentFee = this.percentFee(lastBuyerBetInTresoCurrency);
-        Double constantFee = this.constantFee(lastBuyerBetInTresoCurrency);
-        Double fees = this.applyPromotion(item.owner, percentFee + constantFee);
-        Double netFees = fees / (1 + Currency.vatByCountryCode(eBeeCompany.country));
-        this.cash += netFees;
-        return fees;
+        Double percentFee = calculatePercentFee(lastBuyerBetInTresoCurrency);
+        Double constantFee = calculateConstantFee(lastBuyerBetInTresoCurrency);
+        Double fees =  percentFee + constantFee;
+        fees = applyPromotion(item.owner, fees);
+        Double vat = Currency.vatByCountryCode(eBeeCompany.country);
+        Double netFees = 0.0;
+        if(vat > 0){
+            netFees = fees / (1 + vat);
+        }else{
+            netFees = fees;
+        }
+        cash += netFees;
+        return netFees;
     }
 }
 
@@ -75,7 +81,7 @@ public class Buyer  extends User {
         Double currencyRate = Currency.currencyRate(item.owner.country, eBeeCompany.country, Date.today());
         Double lastBuyerBetInBuyerCurrency = item.lastBuyerBet / currencyRate;
         
-        this.cash -= lastBuyerBetInBuyerCurrency;
+        cash -= lastBuyerBetInBuyerCurrency;
         return lastBuyerBetInBuyerCurrency;
     }
 }
@@ -83,7 +89,9 @@ public class Buyer  extends User {
 public class Seller  extends User {
     private String category;
     public Double sellerEndOfAuction(Item item, Double eBeeFees){
-        this.cash += (item.lastBuyerBet - eBeeFees);
+        Double netLastBuyerBet = item.lastBuyerBet - eBeeFees;
+        cash += netLastBuyerBet;
+        return netLastBuyerBet;
     }
     
 }
