@@ -13,7 +13,7 @@ public class eBee  extends User {
         
     }
 
-    public static eBee eBeeCompany(){
+    public static eBee company(){
         if(self == null){
             self = new eBee();
         }
@@ -56,20 +56,18 @@ public class eBee  extends User {
     }
     
     public Double eBeeEndOfAuction(Item item){
-        Double currencyRate = Currency.currencyRate(item.owner.country, eBeeCompany.country, Date.today());
-        Double lastBuyerBetInTresoCurrency = item.lastBuyerBet / currencyRate ;
-        Double percentFee = calculatePercentFee(lastBuyerBetInTresoCurrency);
-        Double constantFee = calculateConstantFee(lastBuyerBetInTresoCurrency);
-        Double fees =  percentFee + constantFee;
+        Double lastBuyerBetInTresoCurrency = item.lastBuyerBet / Currency.currencyRate(item.owner.country, country, Date.today());
+        Double fees = calculatePercentFee(lastBuyerBetInTresoCurrency) + calculateConstantFee(lastBuyerBetInTresoCurrency);
         fees = applyPromotion(item.owner, fees);
-        Double vat = Currency.vatByCountryCode(eBeeCompany.country);
+        
+        Double sellerCountryVat = Currency.vatByCountryCode(item.owner.country);
         Double netFees = 0.0;
-        if(vat > 0){
-            netFees = fees / (1 + vat);
+        if(sellerCountryVat > 0){
+            netFees = fees / (1 + sellerCountryVat);
         }else{
             netFees = fees;
         }
-        cash += netFees;
+        cash += fees;
         return netFees;
     }
 }
@@ -89,7 +87,8 @@ public class Buyer  extends User {
 public class Seller  extends User {
     private String category;
     public Double sellerEndOfAuction(Item item, Double eBeeFees){
-        Double netLastBuyerBet = item.lastBuyerBet - eBeeFees;
+      
+        Double netLastBuyerBet = item.lastBuyerBet - eBeeFees / Currency.currencyRate(eBee.company().country, country, Date.today());
         cash += netLastBuyerBet;
         return netLastBuyerBet;
     }

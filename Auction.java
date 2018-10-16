@@ -33,7 +33,7 @@ public class AuctionFlow {
     }
 
     public void distributeCash(Buyer lastBuyer,Item item){
-        Double netFees = eBee.eBeeEndOfAuction(item);
+        Double netFees = eBee.company().eBeeEndOfAuction(item);
         Double lastBuyerBetAmount = lastBuyer.buyerEndOfAuction(item);
         Double netLastBuyerBetAmount = item.owner.sellerEndOfAuction(item, netFees);
     }

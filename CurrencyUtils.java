@@ -13,11 +13,16 @@ public class Currency {
     }
 
     public static Double vatByCountryCode(Sring country){
-        return listOfVAT.getVAT(country);
+        Double countryVat = listOfVAT.getVAT(country);
+        return countryVat;
     }
 
     public static Double currencyRate(String fromCountry, String toCountry, Date today){
         MarketProvider mkt = reutersConnector();
-        return mkt.currencyRate(fromCountry, toCountry, today);
+        Double currRate = mkt.currencyRate(fromCountry, toCountry, today);
+        if(currRate <= 0){
+            currRate = 1.0;
+        }
+        return currRate;
     }
 }
