@@ -14,7 +14,7 @@ public class AuctionFlow {
             bestBuyer = acquireBets(item);
         }
         
-        distributeCash(bestBuyer, item);
+        spreadRevenues(bestBuyer, item);
     }
 
     public Buyer acquireBets(Item item){
@@ -32,9 +32,9 @@ public class AuctionFlow {
         return maxBettor;
     }
 
-    public void distributeCash(Buyer lastBuyer,Item item){
-        Double netFees = eBee.company().eBeeEndOfAuction(item);
+    public void spreadRevenues(Buyer lastBuyer,Item item){
+        Double sellerRevenue = item.owner.sellerEndOfAuction(item);
         Double lastBuyerBetAmount = lastBuyer.buyerEndOfAuction(item);
-        Double netLastBuyerBetAmount = item.owner.sellerEndOfAuction(item, netFees);
+        
     }
 }

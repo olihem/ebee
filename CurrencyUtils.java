@@ -19,10 +19,10 @@ public class Currency {
 
     public static Double currencyRate(String fromCountry, String toCountry, Date today){
         MarketProvider mkt = reutersConnector();
-        Double currRate = mkt.currencyRate(fromCountry, toCountry, today);
-        if(currRate <= 0){
-            currRate = 1.0;
+        Double currencyRate = mkt.currencyRate(fromCountry, toCountry, today);
+        if(currencyRate <= 0){
+            currencyRate = 1.0;
         }
-        return currRate;
+        return currencyRate;
     }
 }
