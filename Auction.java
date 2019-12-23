@@ -25,7 +25,7 @@ public class AuctionFlow {
                 maxBettor = bettor;
             }
             if(bettor.bet > maxBettor.bet){
-                maxBettor.bet = bettor.bet;
+                maxBettor = bettor;
             }
         }
         item.lastBuyerBet = maxBettor.bet;
