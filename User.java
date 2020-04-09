@@ -19,7 +19,7 @@ public class eBee  extends User {
         }
         return self;
     }
-
+//@deepalgo
     public Double calculatePercentFee(Double amount){
         if(amount <= 1000){
             return 0;
@@ -35,14 +35,14 @@ public class eBee  extends User {
         }
         return 0.0;
     }
-
+//@deepalgo
     public Double calculateConstantFee(Double amount){
         if(amount <= 1000){
             return 10.0;
         }
         return 0.0;
     }
-
+//@deepalgo
     public Double applyPromotion(Seller owner, Double feeAmount){
         
         if(owner.category == "promoted"){
@@ -56,7 +56,7 @@ public class eBee  extends User {
         }
         return feeAmount;
     }
-    
+    //@deepalgo
     public Double eBeeEndOfAuction(Item item){
         //Double lastBuyerBetInTresoCurrency = item.lastBuyerBet / Currency.currencyRate(item.owner.country, country, Date.today());
         
@@ -80,6 +80,7 @@ public class eBee  extends User {
 public class Buyer  extends User {
     private Double bet;
     List<Item> items;
+    //@deepalgo
     public Double buyerEndOfAuction(Item item){
         
         cash -= item.lastBuyerBet;
@@ -89,6 +90,7 @@ public class Buyer  extends User {
 
 public class Seller  extends User {
     private String category;
+    //@deepalgo
     public Double sellerEndOfAuction(Item item){
         double sellerRevenue = eBee.company().eBeeEndOfAuction(item);
         cash += sellerRevenue;
