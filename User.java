@@ -2,6 +2,7 @@ package ebee.auction;
     
 
 public abstract class User {
+    // @deepalgo
     private Double cash;
     private String country;
 }
