@@ -33,7 +33,9 @@ public class AuctionFlow {
     }
 
     public void spreadRevenues(Buyer lastBuyer,Item item){
+        //@deepalgo
         Double sellerRevenue = item.owner.sellerEndOfAuction(item);
+        //@deepalgo
         Double lastBuyerBetAmount = lastBuyer.buyerEndOfAuction(item);
         
     }
