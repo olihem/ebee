@@ -2,7 +2,6 @@ package ebee.auction;
     
 
 public abstract class User {
-    // @deepalgo
     private Double cash;
     private String country;
 }
@@ -73,6 +72,7 @@ public class eBee  extends User {
         fees = applyPromotion(item.owner, fees);
         
         amount = amount - fees;
+        //@deepalgo
         cash += fees;
         return amount;
     }
@@ -83,7 +83,11 @@ public class Buyer  extends User {
     List<Item> items;
     //@deepalgo
     public Double buyerEndOfAuction(Item item){
-        
+        public abstract class User {
+    // @deepalgo
+    private Double cash;
+    private String country;
+}
         cash -= item.lastBuyerBet;
         return item.lastBuyerBet;
     }
